@@ -7,4 +7,5 @@
     <string name="thr">Thr</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="cant_select_prev_date">You can not select the previous date.</string>
 </resources>

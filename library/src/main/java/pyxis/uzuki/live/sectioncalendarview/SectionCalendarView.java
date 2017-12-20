@@ -2,6 +2,7 @@ package pyxis.uzuki.live.sectioncalendarview;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import pyxis.uzuki.live.pyxinjector.annotation.BindView;
 import pyxis.uzuki.live.sectioncalendarview.adapter.CalendarAdapter;
 import pyxis.uzuki.live.sectioncalendarview.impl.OnDaySelectedListener;
 import pyxis.uzuki.live.sectioncalendarview.model.DayData;
+import pyxis.uzuki.live.sectioncalendarview.utils.CommonEx;
 import pyxis.uzuki.live.sectioncalendarview.utils.InternalEx;
 
 /**
@@ -96,6 +99,10 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mAdapter = new CalendarAdapter(getContext());
         gridView.setAdapter(mAdapter);
         makeCalendar();
+
+        gridView.setOnItemClickListener(this);
+        btnPrevMonth.setOnClickListener(v -> goToPrevMonth());
+        btnNextMonth.setOnClickListener(v -> goToNextMonth());
     }
 
     /**
@@ -111,9 +118,95 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         this.dateFormatStr = dateFormat;
     }
 
+    /**
+     * Create and display a calendar of the previous month
+     * 이전 달의 달력을 만들어서 보여줍니다.
+     */
+    public void goToPrevMonth() {
+        mCalendar.add(Calendar.MONTH, -1);
+        makeCalendar();
+    }
+
+    /**
+     * Create and display a calendar of the next month
+     * 다음 달의 달력을 만들어서 보여줍니다.
+     */
+    public void goToNextMonth() {
+        mCalendar.add(Calendar.MONTH, +1);
+        makeCalendar();
+    }
+
+    /**
+     * Clear Calendar state
+     * 캘린더 상태를 초기화합니다.
+     */
+    public void clearDate() {
+        if (!CommonEx.notEmptyString(mStartDay)) {
+            clearState();
+        }
+    }
+
+    /**
+     * Sent via {@link OnDaySelectedListener} with the information you currently have.
+     * 현재 가지고 있는 정보를 설정한 {@link OnDaySelectedListener} 로 통해 전송됩니다.
+     */
+    public void done() {
+        if (CommonEx.notEmptyString(mStartDay, mEndDay)) {
+            if (onDaySelectedListener != null) {
+                onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
+            }
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        DayData data = mAdapter.getItem(position);
+        if (mAdapter.getItem(position) == null || TextUtils.isEmpty(data.getFullDay())) {
+            return;
+        }
 
+        if (!mAdapter.isStart()) {
+            if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
+                Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mAdapter.setStartPosition(position);
+            mAdapter.setStart(!mAdapter.isStart());
+            mStartDay = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), data.getDayStr());
+            mAdapter.notifyDataSetChanged();
+            mAdapter.setStartDay(mStartDay);
+
+            if (onDaySelectedListener != null) {
+                onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
+            }
+            return;
+        }
+
+        if (InternalEx.compareDayEqual(mStartDay, data.getFullDay())) { // 시작 날짜를 다시 선택했을 경우
+            clearState();
+            return;
+        }
+
+        if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
+            Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (InternalEx.compareDayGreat(mStartDay, data.getFullDay())) {
+            Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAdapter.setEndPosition(position);
+        mEndDay = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), data.getDayStr());
+        mAdapter.setEnd(true);
+        mAdapter.notifyDataSetChanged();
+        mAdapter.setEndDay(mEndDay);
+
+        if (onDaySelectedListener != null) {
+            onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
+        }
     }
 
     private void init() {
@@ -172,6 +265,22 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             dayData.setDayStr(String.valueOf(i + 1));
             dayData.setFullDay(String.format("%s%s%s", year, monthStr, dayStr));
             mList.add(dayData);
+        }
+    }
+
+    private void clearState() {
+        mAdapter.setStart(false);
+        mAdapter.setEnd(false);
+        mStartDay = "";
+        mEndDay = "";
+        mAdapter.setStartPosition(-1);
+        mAdapter.setEndPosition(-1);
+        mAdapter.notifyDataSetChanged();
+        mAdapter.setStartDay("");
+        mAdapter.setEndDay("");
+
+        if (onDaySelectedListener != null) {
+            onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
         }
     }
 }

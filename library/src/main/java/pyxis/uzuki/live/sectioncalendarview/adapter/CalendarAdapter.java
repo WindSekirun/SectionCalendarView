@@ -128,7 +128,7 @@ public class CalendarAdapter extends BaseAdapter {
         if (mNowFullDay.equals(data.getFullDay())) { // 오늘 날짜
             holder.dayText.setTextColor(Color.parseColor("#222222"));
         } else {
-            if (CommonEx.notEmptyString(data.getFullDay()) && CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
+            if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
                 holder.dayText.setTextColor(Color.parseColor("#999999"));
             } else {
                 holder.dayText.setTextColor(Color.parseColor("#EEEEEE"));
@@ -136,8 +136,7 @@ public class CalendarAdapter extends BaseAdapter {
         }
 
         holder.dayText.setBackgroundColor(Color.parseColor("#ffffff"));
-        if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isStart &&
-                InternalEx.compareDayEqual(mStartDay, data.getFullDay())) {
+        if (isStart && InternalEx.compareDayEqual(mStartDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(Color.parseColor("#628DE5"));
             holder.dayText.setTextColor(Color.WHITE);
         } else {
@@ -147,9 +146,8 @@ public class CalendarAdapter extends BaseAdapter {
                 holder.dayText.setTextColor(Color.WHITE);
                 mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
             } else {
-                if (CommonEx.notEmptyString(mStartDay, data.getFullDay(), mEndDay) &&
-                        InternalEx.compareDayLessEqaul(mStartDay, data.getFullDay()) &&
-                        InternalEx.compareDayGreatEqaul(mEndDay, data.getFullDay())) {
+                if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) &&
+                        InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
                     holder.dayText.setBackgroundColor(Color.parseColor("#EEEEEE"));
                 }
             }

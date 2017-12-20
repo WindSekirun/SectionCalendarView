@@ -18,6 +18,8 @@ fun padStart(inputStr: String, length: Int, character: Char = '0') = inputStr.pa
 
 fun compareGreater(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() > b.toInt() else false
 
+fun compareLess(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() < b.toInt() else false
+
 fun compareEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() == b.toInt() else false
 
 fun compareGreaterEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() >= b.toInt() else false

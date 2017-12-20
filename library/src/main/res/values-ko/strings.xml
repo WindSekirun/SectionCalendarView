@@ -7,4 +7,5 @@
     <string name="thr">목</string>
     <string name="fri">금</string>
     <string name="sat">토</string>
+    <string name="cant_select_prev_date">이전 날짜를 선택하실 수 없습니다.</string>
 </resources>
