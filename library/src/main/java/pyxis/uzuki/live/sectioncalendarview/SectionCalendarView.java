@@ -154,9 +154,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
      * 캘린더 상태를 초기화합니다.
      */
     public void clearDate() {
-        if (!CommonEx.notEmptyString(mStartDay)) {
-            clearState();
-        }
+        clearState();
     }
 
     /**
@@ -208,6 +206,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             return;
         }
 
+        String dayFormatted = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
+
         if (!mAdapter.isStart()) {
             if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
                 showErrToast();
@@ -216,7 +216,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
             mAdapter.setStartPosition(position);
             mAdapter.setStart(!mAdapter.isStart());
-            mStartDay = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), data.getDayStr());
+            mStartDay = dayFormatted;
             mAdapter.notifyDataSetChanged();
             mAdapter.setStartDay(mStartDay);
 
@@ -242,7 +242,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         }
 
         mAdapter.setEndPosition(position);
-        mEndDay = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), data.getDayStr());
+        mEndDay = dayFormatted;
         mAdapter.setEnd(true);
         mAdapter.notifyDataSetChanged();
         mAdapter.setEndDay(mEndDay);
@@ -257,7 +257,6 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         injector.execute(getContext(), this, this);
 
         mColorData = new ColorData.Builder().build();
-
         mCalendar = Calendar.getInstance();
         mTodayYearInt = mCalendar.get(Calendar.YEAR);
         mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;

@@ -10,9 +10,11 @@ import android.graphics.Color
  * Description:
  */
 
-data class ColorData(val defaultBgColor: Int, val defaultTextColor: Int, val todayTextColor: Int,
-                     val prevDayTextColor: Int, val startDayBgColor: Int, val startDayTextColor: Int,
-                     val endDayBgColor: Int, val endDayTextColor: Int, val selectedDayBgColor: Int) {
+data class ColorData(val defaultBgColor: Int = 0xFFFFFF, val defaultTextColor: Int = 0x999999,
+                     val todayTextColor: Int = 0x222222, val prevDayTextColor: Int = 0xEEEEEE,
+                     val startDayBgColor: Int = 0x628DE5, val startDayTextColor: Int = 0xFFFFFF,
+                     val endDayBgColor: Int = 0xEC3C3C, val endDayTextColor: Int = 0xFFFFFF,
+                     val selectedDayBgColor: Int = 0xEEEEEE) {
 
     class Builder {
         private var defaultBgColor: Int = Color.parseColor("#FFFFFF")

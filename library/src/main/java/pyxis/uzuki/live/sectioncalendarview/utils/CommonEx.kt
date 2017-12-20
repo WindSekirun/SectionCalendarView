@@ -13,17 +13,16 @@ import pyxis.uzuki.live.richutilskt.utils.isEmpty
  * Description:
  */
 
-@JvmOverloads
-fun padStart(inputStr: String, length: Int, character: Char = '0') = inputStr.padStart(length, character)
+fun compareGreater(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() > b.toIntOrZero() else false
 
-fun compareGreater(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() > b.toInt() else false
+fun compareLess(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() < b.toIntOrZero() else false
 
-fun compareLess(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() < b.toInt() else false
+fun compareEqual(a: String, b: String): Boolean = if (notEmptyString(a, b)) a.toIntOrZero() == b.toIntOrZero() else false
 
-fun compareEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() == b.toInt() else false
+fun compareGreaterEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() >= b.toIntOrZero() else false
 
-fun compareGreaterEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() >= b.toInt() else false
+fun compareLessEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() <= b.toIntOrZero() else false
 
-fun compareLessEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() <= b.toInt() else false
+fun notEmptyString(vararg args: String) = args.map { !it.isEmpty() }.all { it }
 
-fun notEmptyString(vararg args: String?) = args.map { it?.isEmpty() ?: false }.all { it }
+fun String.toIntOrZero(): Int = if (!this.isEmpty()) this.toInt() else 0

@@ -49,10 +49,9 @@ public class CalendarAdapter extends BaseAdapter {
     private ArrayList<DayData> mList = new ArrayList<>();
     private ColorData mColorData;
 
-    public CalendarAdapter(Context context, ColorData colorData) {
-        this.mContext = context;
+    public CalendarAdapter(Context mContext, ColorData colorData) {
+        this.mContext = mContext;
         this.mColorData = colorData;
-
         this.mInflater = LayoutInflater.from(mContext);
         mCalendar = Calendar.getInstance();
 
@@ -89,11 +88,19 @@ public class CalendarAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * 시작 날짜 설정
+     *
+     * @param startDay
+     */
     public void setStartDay(String startDay) {
         mStartDay = startDay;
         mStartArr = mStartDay.split("\\.");
     }
 
+    /**
+     * 끝나는 날짜 설정
+     */
     public void setEndDay(String endDay) {
         mEndDay = endDay;
         mEndArr = mEndDay.split("\\.");
@@ -122,22 +129,20 @@ public class CalendarAdapter extends BaseAdapter {
         if (mNowFullDay.equals(data.getFullDay())) { // 오늘 날짜
             holder.dayText.setTextColor(mColorData.getTodayTextColor());
         } else if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
-            holder.dayText.setTextColor(mColorData.getPrevDayTextColor());
-        } else { // 지난 날짜
             holder.dayText.setTextColor(mColorData.getDefaultTextColor());
+        } else {
+            holder.dayText.setTextColor(mColorData.getPrevDayTextColor());
         }
 
         holder.dayText.setBackgroundColor(mColorData.getDefaultBgColor());
         if (isStart && InternalEx.compareDayEqual(mStartDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getStartDayBgColor());
             holder.dayText.setTextColor(mColorData.getStartDayTextColor());
-        } else if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd
-                && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
+        } else if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getEndDayBgColor());
             holder.dayText.setTextColor(mColorData.getEndDayTextColor());
             mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
-        } else if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay())
-                && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
+        } else if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getSelectedDayBgColor());
         }
 

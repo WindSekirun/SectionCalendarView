@@ -14,6 +14,8 @@ import pyxis.uzuki.live.richutilskt.utils.toDateString
  */
 fun assignPad10(number: Int) = if (number < 10) number.toString().padStart(2, '0') else number.toString()
 
+fun assignPad10(number: String) = if (number.toInt() < 10) number.padStart(2, '0') else number
+
 fun compareDayEqual(a: String, b: String) = compareEqual(a.toDateString("yyyy.MM.dd", "yyyyMMdd"), b)
 
 fun compareDayGreatEqual(a: String, b: String) = compareGreaterEqual(a.toDateString("yyyy.MM.dd", "yyyyMMdd"), b)
