@@ -214,7 +214,6 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
                 return;
             }
 
-            mAdapter.setStartPosition(position);
             mAdapter.setStart(!mAdapter.isStart());
             mStartDay = dayFormatted;
             mAdapter.notifyDataSetChanged();
@@ -241,7 +240,6 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             return;
         }
 
-        mAdapter.setEndPosition(position);
         mEndDay = dayFormatted;
         mAdapter.setEnd(true);
         mAdapter.notifyDataSetChanged();
@@ -291,7 +289,6 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
         setCalendarDate(mCalendar.get(Calendar.MONTH) + 1);
         mAdapter.notifyDataSetChanged(mList);
-        mAdapter.setViewMonth(calendar.get(Calendar.MONTH) + 1);
     }
 
     private void setCalendarDate(int desireMonth) {
@@ -317,8 +314,6 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mAdapter.setEnd(false);
         mStartDay = "";
         mEndDay = "";
-        mAdapter.setStartPosition(-1);
-        mAdapter.setEndPosition(-1);
         mAdapter.notifyDataSetChanged();
         mAdapter.setStartDay("");
         mAdapter.setEndDay("");

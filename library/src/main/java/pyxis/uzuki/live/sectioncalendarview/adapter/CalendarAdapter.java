@@ -26,41 +26,23 @@ import pyxis.uzuki.live.sectioncalendarview.utils.InternalEx;
 
 @SuppressWarnings("ConstantConditions")
 public class CalendarAdapter extends BaseAdapter {
-    private Context mContext = null;
-    private Calendar mCalendar = null;
     private LayoutInflater mInflater = null;
-    private int mViewMonth = 0;
-    private int mViewYear = 0;
-    private int mStartPosition = -1;
-    private int mEndPosition = -1;
-    private int mTodayYearInt = 0;
-    private int mTodayMonthInt = 0;
-    private int mTodayInt = 0;
     private String mStartDay = "";
     private String mEndDay = "";
-    private String mEndStr = "";
-    private String mToday = null;
     private String mNowFullDay = null;
-    private String mNowYearMonth = null;
-    private String[] mStartArr = new String[3];
-    private String[] mEndArr = new String[3];
     private boolean isStart = false;
     private boolean isEnd = false;
     private ArrayList<DayData> mList = new ArrayList<>();
     private ColorData mColorData;
 
     public CalendarAdapter(Context mContext, ColorData colorData) {
-        this.mContext = mContext;
         this.mColorData = colorData;
         this.mInflater = LayoutInflater.from(mContext);
-        mCalendar = Calendar.getInstance();
 
-        mTodayYearInt = mCalendar.get(Calendar.YEAR);
-        mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
-        mTodayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mToday = String.valueOf(mTodayInt);
-        mNowYearMonth = String.valueOf(mTodayInt);
-        mNowYearMonth += InternalEx.assignPad10(mTodayMonthInt);
+        Calendar mCalendar = Calendar.getInstance();
+        int mTodayYearInt = mCalendar.get(Calendar.YEAR);
+        int mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
+        int mTodayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
         mNowFullDay = String.valueOf(mTodayYearInt);
         mNowFullDay += InternalEx.assignPad10(mTodayMonthInt);
         mNowFullDay += InternalEx.assignPad10(mTodayInt);
@@ -88,22 +70,12 @@ public class CalendarAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * 시작 날짜 설정
-     *
-     * @param startDay
-     */
     public void setStartDay(String startDay) {
         mStartDay = startDay;
-        mStartArr = mStartDay.split("\\.");
     }
 
-    /**
-     * 끝나는 날짜 설정
-     */
     public void setEndDay(String endDay) {
         mEndDay = endDay;
-        mEndArr = mEndDay.split("\\.");
     }
 
     @Override
@@ -141,7 +113,6 @@ public class CalendarAdapter extends BaseAdapter {
         } else if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getEndDayBgColor());
             holder.dayText.setTextColor(mColorData.getEndDayTextColor());
-            mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
         } else if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getSelectedDayBgColor());
         }
@@ -149,18 +120,6 @@ public class CalendarAdapter extends BaseAdapter {
         holder.dayText.setText(day);
 
         return convertView;
-    }
-
-    public void setViewMonth(int mViewMonth) {
-        this.mViewMonth = mViewMonth;
-    }
-
-    public void setStartPosition(int mStartPosition) {
-        this.mStartPosition = mStartPosition;
-    }
-
-    public void setEndPosition(int mEndPosition) {
-        this.mEndPosition = mEndPosition;
     }
 
     public boolean isStart() {
