@@ -156,9 +156,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
      */
     public void done() {
         if (CommonEx.notEmptyString(mStartDay, mEndDay)) {
-            if (onDaySelectedListener != null) {
-                onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
-            }
+            sendCallback();
         }
     }
 
@@ -199,7 +197,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             return;
         }
 
-        String dayFormatted = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR), (mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
+        String dayFormatted = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR),
+                (mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
 
         if (!mAdapter.isStart()) {
             if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
@@ -212,9 +211,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             mAdapter.notifyDataSetChanged();
             mAdapter.setStartDay(mStartDay);
 
-            if (onDaySelectedListener != null) {
-                onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
-            }
+            sendCallback();
             return;
         }
 
@@ -235,12 +232,9 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
         mEndDay = dayFormatted;
         mAdapter.setEnd(true);
-        mAdapter.notifyDataSetChanged();
         mAdapter.setEndDay(mEndDay);
-
-        if (onDaySelectedListener != null) {
-            onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
-        }
+        mAdapter.notifyDataSetChanged();
+        sendCallback();
     }
 
     private void init() {
@@ -249,18 +243,13 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
         mColorData = new ColorData.Builder().build();
         mCalendar = Calendar.getInstance();
-        int todayYearInt = mCalendar.get(Calendar.YEAR);
-        int todayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
-        int todayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
-
-        mNowFullDay = String.valueOf(todayYearInt);
-        mNowFullDay += InternalEx.assignPad10(todayMonthInt);
-        mNowFullDay += InternalEx.assignPad10(todayInt);
+        mNowFullDay = String.valueOf(mCalendar.get(Calendar.YEAR));
+        mNowFullDay += InternalEx.assignPad10(mCalendar.get(Calendar.MONTH) + 1);
+        mNowFullDay += InternalEx.assignPad10(mCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void makeCalendar() {
         mList.clear();
-
         Calendar calendar = (Calendar) mCalendar.clone();
         SimpleDateFormat dateFormat = new SimpleDateFormat(mDateFormatStr, Locale.getDefault());
         txtDayText.setText(dateFormat.format(mCalendar.getTime()));
@@ -273,12 +262,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             mList.add(new DayData());
         }
 
-        setCalendarDate(mCalendar.get(Calendar.MONTH) + 1);
-        mAdapter.notifyDataSetChanged(mList);
-    }
+        mCalendar.set(Calendar.MONTH, mCalendar.get(Calendar.MONTH));
 
-    private void setCalendarDate(int desireMonth) {
-        mCalendar.set(Calendar.MONTH, desireMonth - 1);
         for (int i = 0, icnt = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH); i < icnt; i++) {
             int year = mCalendar.get(Calendar.YEAR);
             int month = mCalendar.get(Calendar.MONTH) + 1;
@@ -288,6 +273,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             DayData dayData = new DayData(year, month, i + 1, String.valueOf(i + 1), String.format("%s%s%s", year, monthStr, dayStr));
             mList.add(dayData);
         }
+
+        mAdapter.notifyDataSetChanged(mList);
     }
 
     private void clearState() {
@@ -298,10 +285,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mAdapter.notifyDataSetChanged();
         mAdapter.setStartDay("");
         mAdapter.setEndDay("");
-
-        if (onDaySelectedListener != null) {
-            onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
-        }
+        sendCallback();
     }
 
     private void showErrToast() {
@@ -311,5 +295,11 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         }
 
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void sendCallback() {
+        if (onDaySelectedListener != null) {
+            onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
+        }
     }
 }

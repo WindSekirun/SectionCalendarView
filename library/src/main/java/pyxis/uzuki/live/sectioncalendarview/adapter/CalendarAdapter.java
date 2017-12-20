@@ -38,12 +38,9 @@ public class CalendarAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(mContext);
 
         Calendar mCalendar = Calendar.getInstance();
-        int todayYearInt = mCalendar.get(Calendar.YEAR);
-        int todayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
-        int todayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mNowFullDay = String.valueOf(todayYearInt);
-        mNowFullDay += InternalEx.assignPad10(todayMonthInt);
-        mNowFullDay += InternalEx.assignPad10(todayInt);
+        mNowFullDay = String.valueOf(mCalendar.get(Calendar.YEAR));
+        mNowFullDay += InternalEx.assignPad10(mCalendar.get(Calendar.MONTH) + 1);
+        mNowFullDay += InternalEx.assignPad10(mCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
@@ -61,42 +58,22 @@ public class CalendarAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void notifyDataSetChanged(ArrayList<DayData> list) {
-        mList.clear();
-        mList.addAll(list);
-
-        notifyDataSetChanged();
-    }
-
-    public void setStartDay(String startDay) {
-        mStartDay = startDay;
-    }
-
-    public void setEndDay(String endDay) {
-        mEndDay = endDay;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
         if (convertView == null) {
-            holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.calendar_item, null);
-            holder.dayText = convertView.findViewById(R.id.txtDay);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (holder == null) {
-            return convertView;
-        }
-
         DayData data = mList.get(position);
         String day = data.getDayStr();
 
-        if (mNowFullDay.equals(data.getFullDay())) { // 오늘 날짜
+        if (mNowFullDay.equals(data.getFullDay())) {
             holder.dayText.setTextColor(mColorData.getTodayTextColor());
         } else if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
             holder.dayText.setTextColor(mColorData.getDefaultTextColor());
@@ -108,7 +85,7 @@ public class CalendarAdapter extends BaseAdapter {
         if (isStart && InternalEx.compareDayEqual(mStartDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getStartDayBgColor());
             holder.dayText.setTextColor(mColorData.getStartDayTextColor());
-        } else if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
+        } else if (CommonEx.notEmptyString(mStartDay) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
             holder.dayText.setBackgroundColor(mColorData.getEndDayBgColor());
             holder.dayText.setTextColor(mColorData.getEndDayTextColor());
         } else if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
@@ -132,7 +109,25 @@ public class CalendarAdapter extends BaseAdapter {
         isEnd = end;
     }
 
+    public void notifyDataSetChanged(ArrayList<DayData> list) {
+        mList.clear();
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void setStartDay(String startDay) {
+        mStartDay = startDay;
+    }
+
+    public void setEndDay(String endDay) {
+        mEndDay = endDay;
+    }
+
     private class ViewHolder {
         TextView dayText;
+
+        ViewHolder(View itemView) {
+            dayText = itemView.findViewById(R.id.txtDay);
+        }
     }
 }

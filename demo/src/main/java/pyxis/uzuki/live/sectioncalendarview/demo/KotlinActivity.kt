@@ -9,8 +9,6 @@ import kotlinx.android.synthetic.main.activity_sample.*
  * SectionCalendarView
  * Class: KotlinActivity
  * Created by Pyxis on 2017-12-20.
- *
- * Description:
  */
 
 class KotlinActivity : AppCompatActivity() {
