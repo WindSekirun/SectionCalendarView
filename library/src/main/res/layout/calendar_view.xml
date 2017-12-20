@@ -30,7 +30,7 @@
                     android:background="@drawable/ic_arrow_left" />
 
                 <TextView
-                    android:id="@+id/top_day_text"
+                    android:id="@+id/txtDayText"
                     android:layout_width="138dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
