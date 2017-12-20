@@ -140,14 +140,12 @@ public class CalendarAdapter extends BaseAdapter {
             holder.dayText.setBackgroundColor(Color.parseColor("#628DE5"));
             holder.dayText.setTextColor(Color.WHITE);
         } else {
-            if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd &&
-                    InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
+            if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
                 holder.dayText.setBackgroundColor(Color.parseColor("#EC3C3C"));
                 holder.dayText.setTextColor(Color.WHITE);
                 mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
             } else {
-                if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) &&
-                        InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
+                if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
                     holder.dayText.setBackgroundColor(Color.parseColor("#EEEEEE"));
                 }
             }

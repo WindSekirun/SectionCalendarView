@@ -193,7 +193,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             return;
         }
 
-        if (InternalEx.compareDayGreat(mStartDay, data.getFullDay())) {
+        if (InternalEx.compareDayGreat(mStartDay, data.getFullDay())) { // 시작 날짜보다 전 날짜를 선택했을 때
             Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
             return;
         }
