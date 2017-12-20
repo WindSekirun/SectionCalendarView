@@ -26,4 +26,4 @@ fun compareGreaterEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toIn
 
 fun compareLessEqual(a: String, b: String) = if (notEmptyString(a, b)) a.toInt() <= b.toInt() else false
 
-fun notEmptyString(vararg args: String) = args.map { !it.isEmpty() }.all { it }
+fun notEmptyString(vararg args: String?) = args.map { it?.isEmpty() ?: false }.all { it }

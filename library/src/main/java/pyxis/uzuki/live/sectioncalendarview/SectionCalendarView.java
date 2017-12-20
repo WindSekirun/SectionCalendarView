@@ -20,6 +20,7 @@ import pyxis.uzuki.live.pyxinjector.PyxInjector;
 import pyxis.uzuki.live.pyxinjector.annotation.BindView;
 import pyxis.uzuki.live.sectioncalendarview.adapter.CalendarAdapter;
 import pyxis.uzuki.live.sectioncalendarview.impl.OnDaySelectedListener;
+import pyxis.uzuki.live.sectioncalendarview.model.ColorData;
 import pyxis.uzuki.live.sectioncalendarview.model.DayData;
 import pyxis.uzuki.live.sectioncalendarview.utils.CommonEx;
 import pyxis.uzuki.live.sectioncalendarview.utils.InternalEx;
@@ -43,8 +44,9 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
     private Calendar mCalendar = null;
     private CalendarAdapter mAdapter = null;
-
-    private String dateFormatStr = "yyyy MMM";
+    private String mDateFormatStr = "yyyy MMM";
+    private String mErrToastStr = "";
+    private ColorData mColorData;
 
     private int mTodayYearInt = 0;
     private int mTodayMonthInt = 0;
@@ -95,7 +97,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mStartDay = startDay;
         mEndDay = endDay;
 
-        mAdapter = new CalendarAdapter(getContext());
+        mAdapter = new CalendarAdapter(getContext(), mColorData);
         gridView.setAdapter(mAdapter);
         makeCalendar();
 
@@ -126,7 +128,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
      * @param dateFormat DateFormat / 날짜 포맷
      */
     public void setDateFormat(String dateFormat) {
-        this.dateFormatStr = dateFormat;
+        this.mDateFormatStr = dateFormat;
     }
 
     /**
@@ -169,6 +171,36 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         }
     }
 
+    /**
+     * Change message of Toast to be displayed if an incorrect value is selected.
+     * 잘못된 값을 선택했을 경우 표시되는 Toast의 메세지를 변경합니다.
+     *
+     * @param message message / 메세지
+     */
+    public void setErrToastMessage(String message) {
+        this.mErrToastStr = message;
+    }
+
+    /**
+     * Change message of Toast to be displayed if an incorrect value is selected.
+     * 잘못된 값을 선택했을 경우 표시되는 Toast의 메세지를 변경합니다.
+     *
+     * @param messageRes resources of message / 메세지 리소스
+     */
+    public void setErrToastMessage(int messageRes) {
+        this.mErrToastStr = getContext().getString(messageRes);
+    }
+
+    /**
+     * Use the {@link ColorData} object to set the color.
+     * {@link ColorData} 객체를 활용하여 색을 설정합니다.
+     *
+     * @param colorData {@link ColorData}
+     */
+    public void setColorData(ColorData colorData) {
+        this.mColorData = colorData;
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DayData data = mAdapter.getItem(position);
@@ -178,7 +210,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
         if (!mAdapter.isStart()) {
             if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
-                Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+                showErrToast();
                 return;
             }
 
@@ -200,12 +232,12 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         }
 
         if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
-            Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+            showErrToast();
             return;
         }
 
         if (InternalEx.compareDayGreat(mStartDay, data.getFullDay())) { // 시작 날짜보다 전 날짜를 선택했을 때
-            Toast.makeText(getContext(), R.string.cant_select_prev_date, Toast.LENGTH_SHORT).show();
+            showErrToast();
             return;
         }
 
@@ -224,6 +256,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         inflate(getContext(), R.layout.calendar_view, this);
         injector.execute(getContext(), this, this);
 
+        mColorData = new ColorData.Builder().build();
+
         mCalendar = Calendar.getInstance();
         mTodayYearInt = mCalendar.get(Calendar.YEAR);
         mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
@@ -240,7 +274,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mList.clear();
 
         Calendar calendar = (Calendar) mCalendar.clone();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr, Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(mDateFormatStr, Locale.getDefault());
         txtDayText.setText(dateFormat.format(mCalendar.getTime()));
 
         calendar.set(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), 1);
@@ -293,5 +327,14 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         if (onDaySelectedListener != null) {
             onDaySelectedListener.onDaySelected(mStartDay, mEndDay);
         }
+    }
+
+    private void showErrToast() {
+        String message = getContext().getString(R.string.cant_select_prev_date);
+        if (!TextUtils.isEmpty(mErrToastStr)) {
+            message = mErrToastStr;
+        }
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

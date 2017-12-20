@@ -1,7 +1,6 @@
 package pyxis.uzuki.live.sectioncalendarview.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import pyxis.uzuki.live.sectioncalendarview.R;
+import pyxis.uzuki.live.sectioncalendarview.model.ColorData;
 import pyxis.uzuki.live.sectioncalendarview.model.DayData;
 import pyxis.uzuki.live.sectioncalendarview.utils.CommonEx;
 import pyxis.uzuki.live.sectioncalendarview.utils.InternalEx;
@@ -47,9 +47,12 @@ public class CalendarAdapter extends BaseAdapter {
     private boolean isStart = false;
     private boolean isEnd = false;
     private ArrayList<DayData> mList = new ArrayList<>();
+    private ColorData mColorData;
 
-    public CalendarAdapter(Context mContext) {
-        this.mContext = mContext;
+    public CalendarAdapter(Context context, ColorData colorData) {
+        this.mContext = context;
+        this.mColorData = colorData;
+
         this.mInflater = LayoutInflater.from(mContext);
         mCalendar = Calendar.getInstance();
 
@@ -86,19 +89,11 @@ public class CalendarAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * 시작 날짜 설정
-     *
-     * @param startDay
-     */
     public void setStartDay(String startDay) {
         mStartDay = startDay;
         mStartArr = mStartDay.split("\\.");
     }
 
-    /**
-     * 끝나는 날짜 설정
-     */
     public void setEndDay(String endDay) {
         mEndDay = endDay;
         mEndArr = mEndDay.split("\\.");
@@ -124,31 +119,26 @@ public class CalendarAdapter extends BaseAdapter {
         DayData data = mList.get(position);
         String day = data.getDayStr();
 
-        holder.dayText.setTextColor(Color.parseColor("#999999"));
         if (mNowFullDay.equals(data.getFullDay())) { // 오늘 날짜
-            holder.dayText.setTextColor(Color.parseColor("#222222"));
-        } else {
-            if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
-                holder.dayText.setTextColor(Color.parseColor("#999999"));
-            } else {
-                holder.dayText.setTextColor(Color.parseColor("#EEEEEE"));
-            }
+            holder.dayText.setTextColor(mColorData.getTodayTextColor());
+        } else if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
+            holder.dayText.setTextColor(mColorData.getPrevDayTextColor());
+        } else { // 지난 날짜
+            holder.dayText.setTextColor(mColorData.getDefaultTextColor());
         }
 
-        holder.dayText.setBackgroundColor(Color.parseColor("#ffffff"));
+        holder.dayText.setBackgroundColor(mColorData.getDefaultBgColor());
         if (isStart && InternalEx.compareDayEqual(mStartDay, data.getFullDay())) {
-            holder.dayText.setBackgroundColor(Color.parseColor("#628DE5"));
-            holder.dayText.setTextColor(Color.WHITE);
-        } else {
-            if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
-                holder.dayText.setBackgroundColor(Color.parseColor("#EC3C3C"));
-                holder.dayText.setTextColor(Color.WHITE);
-                mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
-            } else {
-                if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay()) && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
-                    holder.dayText.setBackgroundColor(Color.parseColor("#EEEEEE"));
-                }
-            }
+            holder.dayText.setBackgroundColor(mColorData.getStartDayBgColor());
+            holder.dayText.setTextColor(mColorData.getStartDayTextColor());
+        } else if (CommonEx.notEmptyString(mStartDay, data.getFullDay()) && isEnd
+                && InternalEx.compareDayEqual(mEndDay, data.getFullDay())) {
+            holder.dayText.setBackgroundColor(mColorData.getEndDayBgColor());
+            holder.dayText.setTextColor(mColorData.getEndDayTextColor());
+            mEndStr = String.valueOf(mList.get(mEndPosition).getDay());
+        } else if (InternalEx.compareDayLessEqual(mStartDay, data.getFullDay())
+                && InternalEx.compareDayGreatEqual(mEndDay, data.getFullDay())) {
+            holder.dayText.setBackgroundColor(mColorData.getSelectedDayBgColor());
         }
 
         holder.dayText.setText(day);
@@ -156,24 +146,12 @@ public class CalendarAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public int getViewMonth() {
-        return mViewMonth;
-    }
-
     public void setViewMonth(int mViewMonth) {
         this.mViewMonth = mViewMonth;
     }
 
-    public int getStartPosition() {
-        return mStartPosition;
-    }
-
     public void setStartPosition(int mStartPosition) {
         this.mStartPosition = mStartPosition;
-    }
-
-    public int getEndPosition() {
-        return mEndPosition;
     }
 
     public void setEndPosition(int mEndPosition) {
@@ -188,16 +166,8 @@ public class CalendarAdapter extends BaseAdapter {
         isStart = start;
     }
 
-    public boolean isEnd() {
-        return isEnd;
-    }
-
     public void setEnd(boolean end) {
         isEnd = end;
-    }
-
-    public String getEndStr() {
-        return mEndStr;
     }
 
     private class ViewHolder {

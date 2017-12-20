@@ -24,5 +24,4 @@ dependencies {
     // WindSekirun OSS
     implementation 'com.github.WindSekirun:RichUtilsKt:2.0.4'
     implementation 'com.github.WindSekirun:PyxInjector:1.1.5'
-    implementation 'com.github.WindSekirun:NyanCat:0.3.0'
 }
