@@ -40,12 +40,12 @@ public class CalendarAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(mContext);
 
         Calendar mCalendar = Calendar.getInstance();
-        int mTodayYearInt = mCalendar.get(Calendar.YEAR);
-        int mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
-        int mTodayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mNowFullDay = String.valueOf(mTodayYearInt);
-        mNowFullDay += InternalEx.assignPad10(mTodayMonthInt);
-        mNowFullDay += InternalEx.assignPad10(mTodayInt);
+        int todayYearInt = mCalendar.get(Calendar.YEAR);
+        int todayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
+        int todayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
+        mNowFullDay = String.valueOf(todayYearInt);
+        mNowFullDay += InternalEx.assignPad10(todayMonthInt);
+        mNowFullDay += InternalEx.assignPad10(todayInt);
     }
 
     @Override

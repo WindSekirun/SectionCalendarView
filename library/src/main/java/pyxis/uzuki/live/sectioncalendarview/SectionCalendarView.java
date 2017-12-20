@@ -47,13 +47,8 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
     private String mDateFormatStr = "yyyy MMM";
     private String mErrToastStr = "";
     private ColorData mColorData;
-
-    private int mTodayYearInt = 0;
-    private int mTodayMonthInt = 0;
-    private int mTodayInt = 0;
     private String mStartDay = "";
     private String mEndDay = "";
-    private String mNowYearMonth = null;
     private String mNowFullDay = null;
     private ArrayList<DayData> mList = new ArrayList<>();
 
@@ -256,15 +251,13 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
 
         mColorData = new ColorData.Builder().build();
         mCalendar = Calendar.getInstance();
-        mTodayYearInt = mCalendar.get(Calendar.YEAR);
-        mTodayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
-        mTodayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
+        int todayYearInt = mCalendar.get(Calendar.YEAR);
+        int todayMonthInt = mCalendar.get(Calendar.MONTH) + 1;
+        int todayInt = mCalendar.get(Calendar.DAY_OF_MONTH);
 
-        mNowYearMonth = String.valueOf(mTodayInt);
-        mNowYearMonth += InternalEx.assignPad10(mTodayMonthInt);
-        mNowFullDay = String.valueOf(mTodayYearInt);
-        mNowFullDay += InternalEx.assignPad10(mTodayMonthInt);
-        mNowFullDay += InternalEx.assignPad10(mTodayInt);
+        mNowFullDay = String.valueOf(todayYearInt);
+        mNowFullDay += InternalEx.assignPad10(todayMonthInt);
+        mNowFullDay += InternalEx.assignPad10(todayInt);
     }
 
     private void makeCalendar() {
