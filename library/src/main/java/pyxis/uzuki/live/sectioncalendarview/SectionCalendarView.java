@@ -268,14 +268,9 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         calendar.set(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), 1);
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
 
-        /*
-         * add whitespace for matching day of the week.
-         * 요일 매칭 위해 공백 추가
-         */
+        // 요일 매칭 위해 공백 추가
         for (int i = 1; i < dayNum; i++) {
-            DayData dayData = new DayData();
-            dayData.setDayStr("");
-            mList.add(dayData);
+            mList.add(new DayData());
         }
 
         setCalendarDate(mCalendar.get(Calendar.MONTH) + 1);
@@ -290,12 +285,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             String monthStr = InternalEx.assignPad10(month);
             String dayStr = InternalEx.assignPad10(i + 1);
 
-            DayData dayData = new DayData();
-            dayData.setYear(year);
-            dayData.setMonth(month);
-            dayData.setDay(i + 1);
-            dayData.setDayStr(String.valueOf(i + 1));
-            dayData.setFullDay(String.format("%s%s%s", year, monthStr, dayStr));
+            DayData dayData = new DayData(year, month, i + 1, String.valueOf(i + 1), String.format("%s%s%s", year, monthStr, dayStr));
             mList.add(dayData);
         }
     }
