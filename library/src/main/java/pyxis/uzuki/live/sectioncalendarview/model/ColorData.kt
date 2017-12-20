@@ -6,8 +6,6 @@ import android.graphics.Color
  * SectionCalendarView
  * Class: ColorData
  * Created by Pyxis on 2017-12-20.
- *
- * Description:
  */
 
 data class ColorData(val defaultBgColor: Int = 0xFFFFFF, val defaultTextColor: Int = 0x999999,

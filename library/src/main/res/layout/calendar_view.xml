@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#fff"
+        android:minHeight="340dp"
         android:orientation="vertical">
 
         <FrameLayout

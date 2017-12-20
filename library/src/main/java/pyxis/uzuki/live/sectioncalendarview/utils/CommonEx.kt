@@ -9,8 +9,6 @@ import pyxis.uzuki.live.richutilskt.utils.isEmpty
  * SectionCalendarView
  * Class: CommonEx
  * Created by Pyxis on 2017-12-20.
- *
- * Description:
  */
 
 fun compareGreater(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() > b.toIntOrZero() else false

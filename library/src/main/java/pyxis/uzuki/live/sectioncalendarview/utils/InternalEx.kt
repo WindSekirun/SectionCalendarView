@@ -9,8 +9,6 @@ import pyxis.uzuki.live.richutilskt.utils.toDateString
  * SectionCalendarView
  * Class: InternalEx
  * Created by Pyxis on 2017-12-20.
- *
- * Description:
  */
 fun assignPad10(number: Int) = if (number < 10) number.toString().padStart(2, '0') else number.toString()
 

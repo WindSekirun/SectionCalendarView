@@ -83,7 +83,7 @@
 
     <pyxis.uzuki.live.sectioncalendarview.SectionCalendarView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="340dp"
         android:layout_marginTop="10dp"
         android:id="@+id/calendarView" />
 

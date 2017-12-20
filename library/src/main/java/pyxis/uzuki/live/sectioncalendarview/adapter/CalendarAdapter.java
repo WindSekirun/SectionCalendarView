@@ -20,8 +20,6 @@ import pyxis.uzuki.live.sectioncalendarview.utils.InternalEx;
  * SectionCalendarView
  * Class: CalendarAdapter
  * Created by Pyxis on 2017-12-20.
- * <p>
- * Description:
  */
 
 @SuppressWarnings("ConstantConditions")
