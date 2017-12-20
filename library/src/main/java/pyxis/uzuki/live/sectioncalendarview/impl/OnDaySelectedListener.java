@@ -1,7 +1,5 @@
 package pyxis.uzuki.live.sectioncalendarview.impl;
 
-import android.support.annotation.NonNull;
-
 /**
  * SectionCalendarView
  * Class: OnDaySelectedListener
@@ -21,5 +19,5 @@ public interface OnDaySelectedListener {
      * @param startDay StartDay / 시작일
      * @param endDay EndDay / 종료일
      */
-    public void onDaySelected(@NonNull String startDay, @NonNull String endDay);
+    public void onDaySelected(String startDay, String endDay);
 }

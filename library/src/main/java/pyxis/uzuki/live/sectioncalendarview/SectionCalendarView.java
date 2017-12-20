@@ -1,7 +1,6 @@
 package pyxis.uzuki.live.sectioncalendarview;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -61,7 +60,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         init();
     }
 
-    public SectionCalendarView(Context context, @Nullable AttributeSet attrs) {
+    public SectionCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -101,8 +100,20 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         makeCalendar();
 
         gridView.setOnItemClickListener(this);
-        btnPrevMonth.setOnClickListener(v -> goToPrevMonth());
-        btnNextMonth.setOnClickListener(v -> goToNextMonth());
+
+        btnPrevMonth.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPrevMonth();
+            }
+        });
+
+        btnNextMonth.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNextMonth();
+            }
+        });
     }
 
     /**
