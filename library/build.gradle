@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion 26
@@ -24,4 +25,17 @@ dependencies {
     // WindSekirun OSS
     implementation 'com.github.WindSekirun:RichUtilsKt:2.0.4'
     implementation 'com.github.WindSekirun:PyxInjector:1.1.5'
+}
+
+dokka {
+    moduleName = 'SectionCalendarView'
+    outputFormat = 'html'
+    outputDirectory = "$rootProject.projectDir/docs"
+    sourceDirs = files('src/main/java')
+    skipEmptyPackages = true
+    linkMapping {
+        dir = "src/main/java"
+        url = "https://github.com/WindSekirun/SectionCalendarView/tree/master/library/src/main/java"
+        suffix = "#L"
+    }
 }

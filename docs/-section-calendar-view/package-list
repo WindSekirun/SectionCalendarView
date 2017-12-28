@@ -1,0 +1,8 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:pyxis.uzuki.live.sectioncalendarview.utils$toIntOrZero(kotlin.String)pyxis.uzuki.live.sectioncalendarview.utils/kotlin.-string/to-int-or-zero.html
+pyxis.uzuki.live.sectioncalendarview
+pyxis.uzuki.live.sectioncalendarview.adapter
+pyxis.uzuki.live.sectioncalendarview.impl
+pyxis.uzuki.live.sectioncalendarview.model
+pyxis.uzuki.live.sectioncalendarview.utils
