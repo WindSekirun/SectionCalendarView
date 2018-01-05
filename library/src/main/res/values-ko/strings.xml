@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">SectionCalendarView</string>
     <string name="sun">일</string>
     <string name="mon">월</string>
     <string name="tue">화</string>
