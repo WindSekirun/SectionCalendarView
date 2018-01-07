@@ -45,6 +45,6 @@ public class JavaActivity extends InjectActivity {
 
     @OnClick(R.id.btnDone)
     private void clickDone() {
-        calendarView.done();
+        calendarView.sendNowValue();
     }
 }

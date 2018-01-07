@@ -31,6 +31,6 @@ class KotlinActivity : AppCompatActivity() {
         calendarView.buildCalendar()
 
         btnClear.setOnClickListener { v -> calendarView.clearDate() }
-        btnDone.setOnClickListener { v -> calendarView.done() }
+        btnDone.setOnClickListener { v -> calendarView.sendNowValue() }
     }
 }

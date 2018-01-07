@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import pyxis.uzuki.live.pyxinjector.PyxInjector;
@@ -154,7 +155,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
      * Sent via {@link OnDaySelectedListener} with the information you currently have.
      * 현재 가지고 있는 정보를 설정한 {@link OnDaySelectedListener} 로 통해 전송됩니다.
      */
-    public void done() {
+    public void sendNowValue() {
         if (CommonEx.notEmptyString(mStartDay, mEndDay)) {
             sendCallback();
         }
@@ -188,6 +189,34 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
      */
     public void setColorData(ColorData colorData) {
         this.mColorData = colorData;
+    }
+
+    /**
+     * Set StartDay manually
+     * StartDay를 수동으로 설정합니다.
+     *
+     * @param startDay {@link Date}
+     */
+    public void setStartDay(Date startDay) {
+        mStartDay = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(startDay);
+        mAdapter.setStart(true);
+        mAdapter.setStartDay(mStartDay);
+        mAdapter.notifyDataSetChanged();
+        sendCallback();
+    }
+
+    /**
+     * Set EndDay manually
+     * EndDay를 수동으로 설정합니다.
+     *
+     * @param endDay {@link Date}
+     */
+    public void setEndDay(Date endDay) {
+        mEndDay = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(endDay);
+        mAdapter.setEnd(true);
+        mAdapter.setEndDay(mEndDay);
+        mAdapter.notifyDataSetChanged();
+        sendCallback();
     }
 
     @Override
