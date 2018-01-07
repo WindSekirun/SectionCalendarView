@@ -198,7 +198,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         }
 
         String dayFormatted = String.format("%s.%s.%s", mCalendar.get(Calendar.YEAR),
-                (mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
+                InternalEx.assignPad10(mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
 
         if (!mAdapter.isStart()) {
             if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때

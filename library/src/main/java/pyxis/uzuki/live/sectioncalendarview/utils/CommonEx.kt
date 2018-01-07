@@ -13,7 +13,6 @@ import pyxis.uzuki.live.richutilskt.utils.isEmpty
 
 fun notEmptyString(vararg args: String) = args.map { !it.isEmpty() }.all { it }
 
-
 fun compareGreater(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() > b.toIntOrZero() else false
 
 fun compareLess(a: String, b: String) = if (notEmptyString(a, b)) a.toIntOrZero() < b.toIntOrZero() else false
