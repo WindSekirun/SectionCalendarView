@@ -20,7 +20,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.3'
+    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.4'
 }
 ```
 
@@ -38,6 +38,7 @@ dependencies {
 
 ```Kotlin
 calendarView.setDateFormat("yyyy MMM")
+calendarView.setPreventPreviousDate(true)
 calendarView.setErrToastMessage("You can not select the previous date.")
 calendarView.setOnDaySelectedListener { startDay, endDay ->
     txtStartDay.text = startDay
@@ -50,6 +51,7 @@ calendarView.buildCalendar()
 
 ```Java
 calendarView.setDateFormat("yyyy MMM");
+calendarView.setPreventPreviousDate(true);
 calendarView.setErrToastMessage("You can not select the previous date.");
 calendarView.setOnDaySelectedListener((startDay, endDay) -> {
     txtStartDay.setText(startDay);
