@@ -20,7 +20,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.4'
+    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.5.1'
 }
 ```
 
