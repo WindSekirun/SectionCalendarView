@@ -23,6 +23,7 @@ class KotlinActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun init() {
         calendarView.setDateFormat("yyyy MMM")
+        calendarView.setPreventPreviousDate(false)
         calendarView.setErrToastMessage("You can not select the previous date.")
         calendarView.setOnDaySelectedListener { startDay, endDay ->
             txtStartDay.text = startDay

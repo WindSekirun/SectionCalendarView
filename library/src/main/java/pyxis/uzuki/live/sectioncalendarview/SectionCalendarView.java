@@ -49,6 +49,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
     private String mStartDay = "";
     private String mEndDay = "";
     private String mNowFullDay = null;
+    private boolean mPreventPreviousDate = true;
     private ArrayList<DayData> mList = new ArrayList<>();
 
     public SectionCalendarView(Context context) {
@@ -91,7 +92,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         mStartDay = startDay;
         mEndDay = endDay;
 
-        mAdapter = new CalendarAdapter(getContext(), mColorData);
+        mAdapter = new CalendarAdapter(getContext(), mColorData, mPreventPreviousDate);
         gridView.setAdapter(mAdapter);
         makeCalendar();
 
@@ -219,6 +220,15 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
         sendCallback();
     }
 
+    /**
+     * Set PreventPreviousDate flag
+     *
+     * @param preventPreviousDate
+     */
+    public void setPreventPreviousDate(boolean preventPreviousDate) {
+        mPreventPreviousDate = preventPreviousDate;
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DayData data = mAdapter.getItem(position);
@@ -230,7 +240,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
                 InternalEx.assignPad10(mCalendar.get(Calendar.MONTH) + 1), InternalEx.assignPad10(data.getDayStr()));
 
         if (!mAdapter.isStart()) {
-            if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
+            if (mPreventPreviousDate && CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
                 showErrToast();
                 return;
             }
@@ -249,7 +259,7 @@ public class SectionCalendarView extends LinearLayout implements AdapterView.OnI
             return;
         }
 
-        if (CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
+        if (mPreventPreviousDate && CommonEx.compareLess(data.getFullDay(), mNowFullDay)) { // 현재 달에서 오늘보다 전 날짜를 선택할 때
             showErrToast();
             return;
         }

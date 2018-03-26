@@ -32,9 +32,11 @@ public class CalendarAdapter extends BaseAdapter {
     private boolean isEnd = false;
     private ArrayList<DayData> mList = new ArrayList<>();
     private ColorData mColorData;
+    private boolean mPreventPreviousDate = true;
 
-    public CalendarAdapter(Context mContext, ColorData colorData) {
+    public CalendarAdapter(Context mContext, ColorData colorData, boolean preventPreviousDate) {
         this.mColorData = colorData;
+        this.mPreventPreviousDate = preventPreviousDate;
         this.mInflater = LayoutInflater.from(mContext);
 
         Calendar mCalendar = Calendar.getInstance();
@@ -77,8 +79,10 @@ public class CalendarAdapter extends BaseAdapter {
             holder.dayText.setTextColor(mColorData.getTodayTextColor());
         } else if (CommonEx.compareGreater(data.getFullDay(), mNowFullDay)) {
             holder.dayText.setTextColor(mColorData.getDefaultTextColor());
-        } else {
+        } else if (mPreventPreviousDate) {
             holder.dayText.setTextColor(mColorData.getPrevDayTextColor());
+        } else {
+            holder.dayText.setTextColor(mColorData.getDefaultTextColor());
         }
 
         holder.dayText.setBackgroundColor(mColorData.getDefaultBgColor());
