@@ -1,6 +1,6 @@
 # SectionCalendarView [![](https://jitpack.io/v/WindSekirun/SectionCalendarView.svg)](https://jitpack.io/#WindSekirun/SectionCalendarView) [![CircleCI](https://circleci.com/gh/WindSekirun/SectionCalendarView.svg?style=svg)](https://circleci.com/gh/WindSekirun/SectionCalendarView)
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.2.0-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.2.0-blue.svg)](http://kotlinlang.org)	[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SectionCalendarView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6807)
 
 <img src="https://github.com/WindSekirun/SectionCalendarView/blob/master/sample.png" width="202" height="360">
 
@@ -20,7 +20,7 @@ allprojects {
 *app/build.gradle*
 ```
 dependencies {
-    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.2'
+    implementation 'com.github.WindSekirun:SectionCalendarView:1.0.4'
 }
 ```
 
@@ -38,6 +38,7 @@ dependencies {
 
 ```Kotlin
 calendarView.setDateFormat("yyyy MMM")
+calendarView.setPreventPreviousDate(true)
 calendarView.setErrToastMessage("You can not select the previous date.")
 calendarView.setOnDaySelectedListener { startDay, endDay ->
     txtStartDay.text = startDay
@@ -50,6 +51,7 @@ calendarView.buildCalendar()
 
 ```Java
 calendarView.setDateFormat("yyyy MMM");
+calendarView.setPreventPreviousDate(true);
 calendarView.setErrToastMessage("You can not select the previous date.");
 calendarView.setOnDaySelectedListener((startDay, endDay) -> {
     txtStartDay.setText(startDay);
